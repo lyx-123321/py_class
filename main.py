@@ -63,6 +63,42 @@ while(True):
                         life = settedlife#重置生命值到设置的次数
                         break
 
+        while (modflag == 0 and turn>0):#猜成语游戏模块
+            a=s#将原成语赋值给a，用于打乱顺序
+            luanxu=""
+            while a:  # a不是空字符串
+                # 根据a长度，产生a的随机位置
+                position = random.randrange(len(a))
+                # 将position位置字母组合到乱序的单词
+                luanxu += a[position]
+                # 通过切片，将position位置字母从原单词中删除
+                a = a[:position] + a[(position + 1):]
+            #以上得到乱序成语
+            while(life>0):
+                g = easygui.enterbox(msg=luanxu, title="猜成语")#获取玩家的输入，输出乱序成语
+                if(g==s):#如果相同那么胜利
+                    ctu = easygui.indexbox(msg="回答正确", title="猜成语", choices=("继续游戏", "退出游戏"))  # 弹出正确界面
+                    turn=turn-1
+                    if (ctu == 0):  # 用户选择继续游玩
+                        break
+                    else:  # 用户选择结束
+                        gameflag = 10;modflag = 10;break  # 跳出猜成语模块回到主界面
+                else:
+                    life = life - 1
+                    if (life == 0):
+                        easygui.msgbox("你输了")
+                        gameflag = 10;modflag = 10;break  # 跳出猜成语模块回到主界面
+                    judegeFlag = easygui.indexbox(msg="回答错误还有" + str(life) + "次机会", title="猜成语",choices=("继续猜成语", "认输并回到主界面"))
+                    if(judegeFlag==1):
+                        gameflag=10;modflag=10;break#回到主界面
+            rad=random.randint(0, total-1);s = line[rad]#随机获取一个成语
+            while (s in notInLine):#判断是否出现过，出现过的话就进入循环直到不在循环里面
+                rad=random.randint(0, total-1);s = line[rad]
+            notInLine.append(s)#将新成语加入到使用过的成语中
+            life = settedlife#重置生命值到设置的次数
+        if(turn==0):#玩家胜利了
+            easygui.msgbox("你赢了！！！")
+            gameflag = 10;modflag = 10;#回到主界面                        
     while (gameflag==1):
         setflag=easygui.indexbox(msg="请选择要更改的内容",title="设置",choices=("修改抽取成语数量","修改允许错误次数","返回主页面"))
         if(setflag==0):
