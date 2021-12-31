@@ -1,3 +1,2 @@
 # py_class
-for class
-Final work
+for class Final work
